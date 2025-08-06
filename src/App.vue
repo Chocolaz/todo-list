@@ -59,7 +59,7 @@ const addTodoHandler = async () => {
         class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
         <input
           v-model="newTodo"
-          placeholder="✨ Add a kawaii task..."
+          placeholder="✨ Add a task..."
           class="md:col-span-2 p-4 backdrop-blur-md bg-pink-50/80 border-2 border-pink-300 rounded-2xl text-pink-800 placeholder-pink-400 focus:outline-none focus:ring-4 focus:ring-pink-400/50 focus:border-pink-500 transition-all duration-300 shadow-lg shadow-pink-200/50" />
 
         <div class="flex items-center gap-2">
@@ -106,11 +106,11 @@ const addTodoHandler = async () => {
             'bg-gray-200 cursor-not-allowed border-gray-300 text-gray-400':
               isAddButtonDisabled
           }">
-          ✨ Add Kawaii Task ✨
+          ✨ Add Task ✨
         </button>
       </form>
 
-      <div class="max-h-[500px] overflow-y-auto custom-scrollbar">
+      <div class="max-h-[500px] overflow-y-auto overflow-x-hidden custom-scrollbar p-4">
         <ul class="space-y-4 py-2">
           <li
             v-for="todo in todos"
@@ -196,18 +196,18 @@ const addTodoHandler = async () => {
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: rgba(255, 182, 193, 0.2);
+  background: rgba(255, 182, 193, 0.1);
   border-radius: 10px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(255, 105, 180, 0.6);
+  background: rgba(255, 105, 180, 0.2);
   border-radius: 10px;
   transition: all 0.3s ease;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 105, 180, 0.8);
+  background: rgba(255, 105, 180, 0.3);
 }
 
 /* Custom date input styling for kawaii theme */
