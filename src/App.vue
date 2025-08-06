@@ -13,6 +13,7 @@ import {
 const todos = ref([])
 const newTodo = ref('')
 const newDeadline = ref('')
+const newPriority = ref(0)
 
 const today = computed(() => {
   const d = new Date()
@@ -20,6 +21,14 @@ const today = computed(() => {
   const month = (d.getMonth() + 1).toString().padStart(2, '0')
   const day = d.getDate().toString().padStart(2, '0')
   return `${year}-${month}-${day}`
+})
+
+const isAddButtonDisabled = computed(() => {
+  return (
+    newPriority.value === 0 ||
+    newDeadline.value === '' ||
+    newTodo.value.trim() === ''
+  )
 })
 
 const todosCollection = collection(db, 'todos')
@@ -35,7 +44,8 @@ onMounted(() => {
         text: data.text,
         createdAt: data.createdAt,
         deadline: data.deadline ? data.deadline.toDate() : null,
-        status: data.status || 'To Do'
+        status: data.status || 'To Do',
+        priority: data.priority || 0
       })
     })
     todos.value = fbTodos.sort(
@@ -50,10 +60,12 @@ const addTodo = async () => {
     text: newTodo.value,
     createdAt: new Date(),
     deadline: newDeadline.value ? new Date(newDeadline.value) : null,
-    status: 'To Do'
+    status: 'To Do',
+    priority: newPriority.value
   })
   newTodo.value = ''
   newDeadline.value = ''
+  newPriority.value = 0
 }
 
 const toggleStatus = async (todo) => {
@@ -89,8 +101,9 @@ const randomizeDeadline = () => {
   newDeadline.value = `${year}-${month}-${day}`
 }
 
-const setPriority = (priority) => {
-  newPriority.value = priority
+const setPriority = async (todo, priority) => {
+  const todoRef = doc(db, 'todos', todo.id)
+  await updateDoc(todoRef, { priority: priority })
 }
 </script>
 
@@ -117,25 +130,32 @@ const setPriority = (priority) => {
             type="button"
             @click="randomizeDeadline"
             class="p-3 bg-gray-200 rounded-lg hover:bg-gray-300">
-            <span class="material-icons text-gray-600">casino</span>
+            <span class="material-icons text-black">casino</span>
           </button>
         </div>
-        <div class="md:col-span-3 flex items-center justify-center gap-1 mb-4">
+        <div class="flex items-center gap-1 md:col-span-3">
           <span class="text-gray-700 mr-2">Priority:</span>
-          <span
-            v-for="n in 3"
-            :key="n"
-            @click="setPriority(n)"
-            class="material-icons cursor-pointer text-2xl"
-            :class="{
-              'text-yellow-400': n <= newPriority,
-              'text-yellow-200': n > newPriority
-            }">
-            star
-          </span>
+          <template
+            v-for="star in 3"
+            :key="star">
+            <span
+              @click="newPriority = star"
+              class="material-icons cursor-pointer"
+              :class="{
+                'text-yellow-400': star <= newPriority,
+                'text-gray-400': star > newPriority
+              }">
+              star
+            </span>
+          </template>
         </div>
         <button
-          class="md:col-span-3 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 transition font-semibold">
+          :disabled="isAddButtonDisabled"
+          class="md:col-span-3 bg-blue-600 text-white px-6 py-3 rounded-lg focus:outline-none focus:ring-4 focus:ring-blue-300 transition font-semibold"
+          :class="{
+            'bg-blue-600 hover:bg-blue-700': !isAddButtonDisabled,
+            'bg-gray-400 cursor-not-allowed': isAddButtonDisabled
+          }">
           Add
         </button>
       </form>
@@ -165,6 +185,21 @@ const setPriority = (priority) => {
             </span>
 
             <div class="flex items-center gap-3">
+              <div class="flex items-center">
+                <template
+                  v-for="star in 3"
+                  :key="star">
+                  <span
+                    @click="setPriority(todo, star)"
+                    class="material-icons text-sm cursor-pointer"
+                    :class="{
+                      'text-yellow-400': star <= todo.priority,
+                      'text-gray-400': star > todo.priority
+                    }">
+                    star
+                  </span>
+                </template>
+              </div>
               <span
                 v-if="todo.deadline"
                 class="text-sm px-2 py-1 rounded-full"
@@ -174,18 +209,6 @@ const setPriority = (priority) => {
                 }">
                 {{ formatDate(todo.deadline) }}
               </span>
-              <div class="flex items-center">
-                <span
-                  v-for="n in 3"
-                  :key="n"
-                  class="material-icons text-lg"
-                  :class="{
-                    'text-yellow-400': n <= todo.priority,
-                    'text-yellow-200': n > todo.priority
-                  }">
-                  star
-                </span>
-              </div>
             </div>
           </div>
         </li>
