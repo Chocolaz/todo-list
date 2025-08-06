@@ -38,12 +38,9 @@ onMounted(() => {
         status: data.status || 'To Do'
       })
     })
-    todos.value = fbTodos.sort((a, b) => {
-      if (a.status === b.status) {
-        return a.createdAt.seconds - b.createdAt.seconds
-      }
-      return a.status === 'To Do' ? -1 : 1
-    })
+    todos.value = fbTodos.sort(
+      (a, b) => b.createdAt.seconds - a.createdAt.seconds
+    )
   })
 })
 
@@ -91,6 +88,10 @@ const randomizeDeadline = () => {
   const day = todayDate.getDate().toString().padStart(2, '0')
   newDeadline.value = `${year}-${month}-${day}`
 }
+
+const setPriority = (priority) => {
+  newPriority.value = priority
+}
 </script>
 
 <template>
@@ -116,8 +117,22 @@ const randomizeDeadline = () => {
             type="button"
             @click="randomizeDeadline"
             class="p-3 bg-gray-200 rounded-lg hover:bg-gray-300">
-            <span class="material-icons text-black">casino</span>
+            <span class="material-icons text-gray-600">casino</span>
           </button>
+        </div>
+        <div class="md:col-span-3 flex items-center justify-center gap-1 mb-4">
+          <span class="text-gray-700 mr-2">Priority:</span>
+          <span
+            v-for="n in 3"
+            :key="n"
+            @click="setPriority(n)"
+            class="material-icons cursor-pointer text-2xl"
+            :class="{
+              'text-yellow-400': n <= newPriority,
+              'text-yellow-200': n > newPriority
+            }">
+            star
+          </span>
         </div>
         <button
           class="md:col-span-3 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 transition font-semibold">
@@ -159,6 +174,18 @@ const randomizeDeadline = () => {
                 }">
                 {{ formatDate(todo.deadline) }}
               </span>
+              <div class="flex items-center">
+                <span
+                  v-for="n in 3"
+                  :key="n"
+                  class="material-icons text-lg"
+                  :class="{
+                    'text-yellow-400': n <= todo.priority,
+                    'text-yellow-200': n > todo.priority
+                  }">
+                  star
+                </span>
+              </div>
             </div>
           </div>
         </li>
