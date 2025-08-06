@@ -163,11 +163,11 @@ const setPriority = async (todo, priority) => {
         <li
           v-for="todo in todos"
           :key="todo.id"
-          class="flex items-center p-0 bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200">
+          class="relative z-0 flex items-center p-0 bg-white rounded-xl shadow-sm border border-gray-200">
           <!-- Status bar (left side) -->
           <div
             @click="toggleStatus(todo)"
-            class="flex items-center justify-center p-2 text-white text-xs font-bold writing-mode-vertical h-full max-h-[70px] cursor-pointer transition-colors duration-300 ease-in-out"
+            class="flex items-center justify-center p-2 text-white text-xs font-bold writing-mode-vertical h-full max-h-[70px] cursor-pointer transition-colors duration-300 ease-in-out rounded-l-xl"
             :class="{
               'bg-yellow-500': todo.status === 'To Do',
               'bg-green-500': todo.status === 'Done'
@@ -178,12 +178,14 @@ const setPriority = async (todo, priority) => {
 
           <!-- Task content -->
           <div class="flex justify-between items-center flex-1 p-4">
+            <!-- Task text -->
             <span
               :class="{ 'line-through text-gray-400': todo.status === 'Done' }"
               class="text-gray-700 transition-all duration-500 ease-in-out">
               {{ todo.text }}
             </span>
 
+            <!-- Priority stars -->
             <div class="flex items-center gap-3">
               <div class="flex items-center">
                 <template
@@ -200,17 +202,18 @@ const setPriority = async (todo, priority) => {
                   </span>
                 </template>
               </div>
-              <span
-                v-if="todo.deadline"
-                class="text-sm px-2 py-1 rounded-full"
-                :class="{
-                  'bg-red-200 text-red-500': isOverdue(todo),
-                  'bg-gray-200 text-gray-500': !isOverdue(todo)
-                }">
-                {{ formatDate(todo.deadline) }}
-              </span>
             </div>
           </div>
+          <!-- Deadline overlay -->
+          <span
+            v-if="todo.deadline"
+            class="absolute -top-2 -right-2 text-xs px-2 py-0.5 rounded-full z-10"
+            :class="{
+              'bg-red-200 text-red-600': isOverdue(todo),
+              'bg-gray-200 text-gray-600': !isOverdue(todo)
+            }">
+            {{ formatDate(todo.deadline) }}
+          </span>
         </li>
       </ul>
     </main>
