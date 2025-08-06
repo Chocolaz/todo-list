@@ -48,15 +48,15 @@ const addTodoHandler = async () => {
     </div>
 
     <main
-      class="relative max-w-lg w-full backdrop-blur-xl bg-white/80 border-4 border-pink-300/60 p-8 rounded-3xl shadow-2xl shadow-pink-400/20">
+      class="relative max-w-lg w-full backdrop-blur-xl bg-white/80 border-4 border-pink-300/60 p-4 rounded-3xl shadow-2xl shadow-pink-400/20">
       <h1
-        class="text-4xl font-extrabold mb-8 text-center bg-gradient-to-r from-pink-500 to-fuchsia-500 bg-clip-text text-transparent drop-shadow-lg">
+        class="text-2xl font-extrabold mb-4 text-center bg-gradient-to-r from-pink-500 to-fuchsia-500 bg-clip-text text-transparent drop-shadow-lg">
         ✨ TobiDo TodoBi ✨
       </h1>
 
       <form
         @submit.prevent="addTodoHandler"
-        class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
         <input
           v-model="newTodo"
           placeholder="✨ Add a task..."
@@ -86,7 +86,7 @@ const addTodoHandler = async () => {
             :key="star">
             <span
               @click="newPriority = star"
-              class="material-icons cursor-pointer transition-all duration-300 hover:scale-125 text-2xl"
+              class="material-icons cursor-pointer transition-all duration-300 hover:scale-125 text-xl"
               :class="{
                 'text-pink-500 drop-shadow-lg animate-pulse':
                   star <= newPriority,
@@ -99,7 +99,7 @@ const addTodoHandler = async () => {
 
         <button
           :disabled="isAddButtonDisabled"
-          class="md:col-span-3 backdrop-blur-md px-6 py-4 rounded-2xl focus:outline-none focus:ring-4 focus:ring-pink-400/50 transition-all duration-300 font-bold text-lg border-2 shadow-xl"
+          class="md:col-span-3 backdrop-blur-md px-6 py-2 rounded-2xl focus:outline-none focus:ring-4 focus:ring-pink-400/50 transition-all duration-300 font-bold text-lg border-2 shadow-xl"
           :class="{
             'bg-gradient-to-r from-pink-400 to-fuchsia-400 hover:from-pink-500 hover:to-fuchsia-500 border-pink-400 text-white transform hover:scale-105 shadow-pink-400/40':
               !isAddButtonDisabled,
@@ -110,8 +110,9 @@ const addTodoHandler = async () => {
         </button>
       </form>
 
-      <div class="max-h-[500px] overflow-y-auto overflow-x-hidden custom-scrollbar p-4">
-        <ul class="space-y-4 py-2">
+      <div
+        class="max-h-[450px] overflow-y-auto overflow-x-hidden custom-scrollbar py-4 px-1">
+        <ul class="space-y-4 py-2 pr-2">
           <li
             v-for="todo in todos"
             :key="todo.id"
@@ -144,19 +145,19 @@ const addTodoHandler = async () => {
                   'line-through text-gray-400': todo.status === 'Done',
                   'text-pink-800': todo.status === 'To Do'
                 }"
-                class="transition-all duration-500 ease-in-out font-medium">
+                class="transition-all duration-500 ease-in-out font-medium text-sm">
                 {{ todo.text }}
               </span>
 
               <!-- Priority stars -->
               <div class="flex items-center gap-3">
-                <div class="flex items-center gap-1">
+                <div class="flex items-center">
                   <template
                     v-for="star in 3"
                     :key="star">
                     <span
                       @click="setPriority(todo, star)"
-                      class="material-icons text-xl cursor-pointer transition-all duration-300 hover:scale-125"
+                      class="material-icons text-[16px] cursor-pointer transition-all duration-300 hover:scale-125"
                       :class="{
                         'text-pink-500 drop-shadow-lg animate-pulse':
                           star <= todo.priority,
@@ -173,7 +174,7 @@ const addTodoHandler = async () => {
             <!-- Deadline overlay -->
             <div
               v-if="todo.deadline"
-              class="absolute -top-3 -right-3 text-xs px-3 py-1.5 rounded-full z-10 flex items-center gap-1 backdrop-blur-md border-2 font-bold shadow-lg"
+              class="absolute -top-3 -right-3 text-[9px] px-3 py-1.5 rounded-full z-10 flex items-center gap-1 backdrop-blur-md border-2 font-bold shadow-lg"
               :class="{
                 'bg-red-400 text-white border-red-300': isOverdue(todo),
                 'bg-purple-200 text-purple-800 border-purple-300':
