@@ -56,7 +56,7 @@ const emit = defineEmits(['switch-to-active'])
             'bg-gradient-to-b from-gray-400 to-gray-500 hover:from-gray-500 hover:to-gray-600': true
           }"
           style="writing-mode: vertical-rl; text-orientation: mixed">
-          🗑️ Deleted
+          🗑️ Dump
         </div>
 
         <!-- Task content -->
