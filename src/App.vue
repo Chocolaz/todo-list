@@ -7,7 +7,16 @@ import DeletedTodoList from '@/components/DeletedTodoList.vue'
 import Flatpickr from 'vue-flatpickr-component'
 import 'flatpickr/dist/themes/confetti.css'
 
-const { todos, deletedTodos, loading, addTodo, toggleStatus, setPriority, deleteTodo, restoreTodo } = useTodos()
+const {
+  todos,
+  deletedTodos,
+  loading,
+  addTodo,
+  toggleStatus,
+  setPriority,
+  deleteTodo,
+  restoreTodo
+} = useTodos()
 const { newDeadline, formatDate, isOverdue, randomizeDeadline, today } =
   useUtils()
 const newTodo = ref('')
@@ -65,127 +74,124 @@ const addTodoHandler = async () => {
       <div
         class="absolute bottom-20 right-20 w-2 h-2 bg-white rounded-full animate-ping delay-1000"></div>
     </div>
-    <main
-      class="relative max-w-lg w-full backdrop-blur-xl bg-white/80 border-4 border-pink-300/60 p-4 rounded-3xl shadow-2xl shadow-pink-400/20 max-h-screen overflow-hidden z-10">
-      <div class="flex items-center justify-center pb-2 gap-2">
-        <h1
-          class="text-2xl font-extrabold bg-gradient-to-r from-pink-500 to-fuchsia-500 bg-clip-text text-transparent drop-shadow-lg">
-          TobiDo
-        </h1>
-        <img
-          src="/pic/tobiwi.png"
-          alt="TobiWi"
-          class="w-14 h-14 ml-1" />
-        <h1
-          class="text-2xl font-extrabold bg-gradient-to-r from-pink-500 to-fuchsia-500 bg-clip-text text-transparent drop-shadow-lg">
-          TodoBi
-        </h1>
-      </div>
-
-      <div class="flex justify-center mb-4">
-        <button
-          @click="currentTab = 'active'"
-          :class="{
-            'bg-pink-500 text-white': currentTab === 'active',
-            'bg-gray-200 text-gray-700': currentTab !== 'active'
-          }"
-          class="px-4 py-2 rounded-l-lg font-bold transition-colors duration-300"
-        >
-          Active Tasks
-        </button>
-        <button
-          @click="currentTab = 'deleted'"
-          :class="{
-            'bg-pink-500 text-white': currentTab === 'deleted',
-            'bg-gray-200 text-gray-700': currentTab !== 'deleted'
-          }"
-          class="px-4 py-2 rounded-r-lg font-bold transition-colors duration-300"
-        >
-          Deleted Tasks
-        </button>
-      </div>
-
-      <form
-        v-if="currentTab === 'active'"
-        @submit.prevent="addTodoHandler"
-        class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-        <input
-          v-model="newTodo"
-          placeholder="Add a task..."
-          maxlength="30"
-          class="md:col-span-2 p-4 backdrop-blur-md bg-pink-50/80 border-2 border-pink-300 rounded-2xl text-pink-800 placeholder-pink-400 focus:outline-none focus:ring-4 focus:ring-pink-400/50 focus:border-pink-500 transition-all duration-300 shadow-lg shadow-pink-200/50 h-[55px]" />
-
-        <div class="flex items-center gap-2">
-          <Flatpickr
-            v-model="newDeadline"
-            :config="{
-              dateFormat: 'd/m/y',
-              minDate: 'today',
-              disableMobile: true
-            }"
-            placeholder="dd/mm/yy"
-            class="flex-grow p-4 backdrop-blur-md bg-pink-50/80 border-2 border-pink-300 rounded-2xl text-pink-800 focus:outline-none focus:ring-4 focus:ring-pink-400/50 focus:border-pink-500 transition-all duration-300 shadow-lg shadow-pink-200/50 h-[55px]" />
-          <button
-            type="button"
-            @click="randomizeDeadline"
-            class="p-2 backdrop-blur-md bg-gradient-to-r from-pink-200 to-fuchsia-200 border-2 border-pink-300 rounded-2xl hover:from-pink-300 hover:to-fuchsia-300 transition-all duration-300 group shadow-lg shadow-pink-200/50 h-[55px] w-[55px]">
-            <span
-              class="material-icons text-pink-600 group-hover:rotate-180 group-hover:text-fuchsia-600 transition-all duration-300"
-              >casino</span
-            >
-          </button>
+    <div class="relative max-w-lg w-full">
+      <main
+        class="backdrop-blur-xl bg-white/80 border-4 border-pink-300/60 p-4 rounded-3xl shadow-2xl shadow-pink-400/20 max-h-screen overflow-hidden z-0">
+        <div class="flex items-center justify-center pb-2 gap-2">
+          <h1
+            class="text-2xl font-extrabold bg-gradient-to-r from-pink-500 to-fuchsia-500 bg-clip-text text-transparent drop-shadow-lg">
+            TobiDo
+          </h1>
+          <img
+            src="/pic/tobiwi.png"
+            alt="TobiWi"
+            class="w-14 h-14 ml-1" />
+          <h1
+            class="text-2xl font-extrabold bg-gradient-to-r from-pink-500 to-fuchsia-500 bg-clip-text text-transparent drop-shadow-lg">
+            TodoBi
+          </h1>
         </div>
 
-        <div class="flex items-center gap-2 md:col-span-3">
-          <span class="text-pink-600 font-bold">💖 Priority:</span>
-          <template
-            v-for="star in 3"
-            :key="star">
-            <img
-              src="/pic/tobikod.png"
-              alt="Priority"
-              @click="newPriority = star"
-              class="w-8 h-8 cursor-pointer transition-all duration-300 hover:scale-125"
+        <form
+          v-if="currentTab === 'active'"
+          @submit.prevent="addTodoHandler"
+          class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+          <input
+            v-model="newTodo"
+            placeholder="Add a task..."
+            maxlength="30"
+            class="md:col-span-2 p-4 backdrop-blur-md bg-pink-50/80 border-2 border-pink-300 rounded-2xl text-pink-800 placeholder-pink-400 focus:outline-none focus:ring-4 focus:ring-pink-400/50 focus:border-pink-500 transition-all duration-300 shadow-lg shadow-pink-200/50 h-[55px]" />
+
+          <div class="flex items-center gap-2">
+            <Flatpickr
+              v-model="newDeadline"
+              :config="{
+                dateFormat: 'd/m/y',
+                minDate: 'today',
+                disableMobile: true
+              }"
+              placeholder="dd/mm/yy"
+              class="flex-grow p-4 backdrop-blur-md bg-pink-50/80 border-2 border-pink-300 rounded-2xl text-pink-800 focus:outline-none focus:ring-4 focus:ring-pink-400/50 focus:border-pink-500 transition-all duration-300 shadow-lg shadow-pink-200/50 h-[55px]" />
+            <button
+              type="button"
+              @click="randomizeDeadline"
+              class="p-2 backdrop-blur-md bg-gradient-to-r from-pink-200 to-fuchsia-200 border-2 border-pink-300 rounded-2xl hover:from-pink-300 hover:to-fuchsia-300 transition-all duration-300 group shadow-lg shadow-pink-200/50 h-[55px] w-[55px]">
+              <span
+                class="material-icons text-pink-600 group-hover:rotate-180 group-hover:text-fuchsia-600 transition-all duration-300"
+                >casino</span
+              >
+            </button>
+          </div>
+
+          <div class="flex items-center gap-2 md:col-span-3">
+            <span class="text-pink-600 font-bold">💖 Priority:</span>
+            <template
+              v-for="star in 3"
+              :key="star">
+              <img
+                src="/pic/tobikod.png"
+                alt="Priority"
+                @click="newPriority = star"
+                class="w-8 h-8 cursor-pointer transition-all duration-300 hover:scale-125"
+                :class="{
+                  'opacity-100 drop-shadow-lg ': star <= newPriority,
+                  'opacity-40 hover:opacity-75': star > newPriority
+                }" />
+            </template>
+            <button
+              :disabled="isAddButtonDisabled"
+              class="backdrop-blur-md p-2 rounded-2xl focus:outline-none focus:ring-4 focus:ring-pink-400/50 transition-all duration-300 font-bold text-lg border-2 shadow-xl w-full max-w-[100px] h-[45px] ml-auto flex items-center justify-center"
               :class="{
-                'opacity-100 drop-shadow-lg ': star <= newPriority,
-                'opacity-40 hover:opacity-75': star > newPriority
-              }" />
-          </template>
-          <button
-            :disabled="isAddButtonDisabled"
-            class="backdrop-blur-md p-2 rounded-2xl focus:outline-none focus:ring-4 focus:ring-pink-400/50 transition-all duration-300 font-bold text-lg border-2 shadow-xl w-full max-w-[100px] h-[45px] ml-auto flex items-center justify-center"
-            :class="{
-              'bg-gradient-to-b from-green-400 to-emerald-400 hover:from-green-500 border-green-500 text-white':
-                addIconState === 'check',
-              'bg-gray-200 cursor-not-allowed border-gray-300 text-gray-400':
-                isAddButtonDisabled && addIconState !== 'check',
-              'bg-gradient-to-r from-pink-400 to-fuchsia-400 hover:from-pink-500 hover:to-fuchsia-500 border-pink-400 text-white transform hover:scale-105 shadow-pink-400/40':
-                !isAddButtonDisabled && addIconState !== 'check'
-            }">
-            <span class="material-icons">{{ addIconState }}</span>
-          </button>
-        </div>
-      </form>
+                'bg-gradient-to-b from-green-400 to-emerald-400 hover:from-green-500 border-green-500 text-white':
+                  addIconState === 'check',
+                'bg-gray-200 cursor-not-allowed border-gray-300 text-gray-400':
+                  isAddButtonDisabled && addIconState !== 'check',
+                'bg-gradient-to-r from-pink-400 to-fuchsia-400 hover:from-pink-500 hover:to-fuchsia-500 border-pink-400 text-white transform hover:scale-105 shadow-pink-400/40':
+                  !isAddButtonDisabled && addIconState !== 'check'
+              }">
+              <span class="material-icons">{{ addIconState }}</span>
+            </button>
+          </div>
+        </form>
 
-      <TodoList
-        v-if="currentTab === 'active'"
-        :todos="todos"
-        :loading="loading"
-        :toggleStatus="toggleStatus"
-        :setPriority="setPriority"
-        :isOverdue="isOverdue"
-        :formatDate="formatDate"
-        :deleteTodo="deleteTodo" />
+        <Transition name="fade" mode="out-in">
+        <TodoList
+          v-if="currentTab === 'active'"
+          :todos="todos"
+          :loading="loading"
+          :toggleStatus="toggleStatus"
+          :setPriority="setPriority"
+          :isOverdue="isOverdue"
+          :formatDate="formatDate"
+          :deleteTodo="deleteTodo" />
 
-      <DeletedTodoList
-        v-if="currentTab === 'deleted'"
-        :todos="deletedTodos"
-        :loading="loading"
-        :isOverdue="isOverdue"
-        :formatDate="formatDate"
-        :restoreTodo="restoreTodo"
-      />
-    </main>
+        <DeletedTodoList
+          v-else-if="currentTab === 'deleted'"
+          :todos="deletedTodos"
+          :loading="loading"
+          :isOverdue="isOverdue"
+          :formatDate="formatDate"
+          :restoreTodo="restoreTodo" />
+      </Transition>
+      </main>
+      <!-- Toggle Button (Single Icon) -->
+      <button
+        class="absolute -top-2 -right-2 py-1 px-4 z-50 backdrop-blur-md rounded-full transition-all duration-300 group h-[30px] flex items-center justify-center"
+        :class="{
+          'bg-gradient-to-r from-pink-100 to-fuchsia-100 border-2 border-pink-200 shadow-lg shadow-pink-200/50 hover:from-pink-300 hover:to-fuchsia-300': currentTab === 'active',
+          'bg-gradient-to-r from-emerald-100 to-teal-100 border-2 border-emerald-200 shadow-lg shadow-emerald-200/50 hover:from-emerald-300 hover:to-teal-300': currentTab !== 'active'
+        }"
+        @click="currentTab = currentTab === 'active' ? 'deleted' : 'active'">
+        <span
+          class="material-icons text-[20px]"
+          :class="{
+            'text-pink-500': currentTab === 'active',
+            'text-emerald-500': currentTab !== 'active'
+          }">
+          {{ currentTab === 'active' ? 'delete_sweep' : 'task_alt' }}
+        </span>
+      </button>
+    </div>
   </div>
 </template>
 
@@ -229,5 +235,16 @@ main {
   height: auto;
   max-height: 100vh; /* ไม่เกินความสูง viewport */
   overflow: hidden; /* ป้องกัน scroll */
+}
+
+/* Transition styles */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
