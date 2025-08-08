@@ -38,10 +38,12 @@ export function useTodos() {
 
   const addTodo = async (newTodoText, newDeadlineValue, newPriorityValue) => {
     if (newTodoText.trim() === '') return
+    const [day, month, year] = newDeadlineValue.split('/')
+    const formattedDeadline = `20${year}-${month}-${day}`
     await addDoc(todosCollection, {
       text: newTodoText,
       createdAt: new Date(),
-      deadline: newDeadlineValue ? new Date(newDeadlineValue) : null,
+      deadline: newDeadlineValue ? new Date(formattedDeadline) : null,
       status: 'To Do',
       priority: newPriorityValue
     })

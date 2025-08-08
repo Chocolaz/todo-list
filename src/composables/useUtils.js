@@ -35,7 +35,7 @@ export function useUtils() {
     const year = todayDate.getFullYear()
     const month = (todayDate.getMonth() + 1).toString().padStart(2, '0')
     const day = todayDate.getDate().toString().padStart(2, '0')
-    newDeadline.value = `${year}-${month}-${day}`
+    newDeadline.value = `${day}/${month}/${year.toString().slice(-2)}`
   }
 
   return {

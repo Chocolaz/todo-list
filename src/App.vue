@@ -11,20 +11,34 @@ const { newDeadline, formatDate, isOverdue, randomizeDeadline, today } =
   useUtils()
 const newTodo = ref('')
 const newPriority = ref(0)
+const addIconState = ref('add')
+const isAddingTask = ref(false)
 
 const isAddButtonDisabled = computed(() => {
   return (
     newPriority.value === 0 ||
     newDeadline.value === '' ||
-    newTodo.value.trim() === ''
+    newTodo.value.trim() === '' ||
+    newTodo.value.trim().length > 30 || // Changed validation for max length to 30
+    isAddingTask.value
   )
 })
 
 const addTodoHandler = async () => {
+  if (isAddingTask.value) return
+
+  addIconState.value = 'check' // Set icon to check immediately
+  isAddingTask.value = true // Then disable the button
+
   await addTodo(newTodo.value, newDeadline.value, newPriority.value)
   newTodo.value = ''
   newDeadline.value = ''
   newPriority.value = 0
+
+  setTimeout(() => {
+    addIconState.value = 'add'
+    isAddingTask.value = false
+  }, 1500)
 }
 </script>
 
@@ -73,6 +87,7 @@ const addTodoHandler = async () => {
         <input
           v-model="newTodo"
           placeholder="Add a task..."
+          maxlength="30"
           class="md:col-span-2 p-4 backdrop-blur-md bg-pink-50/80 border-2 border-pink-300 rounded-2xl text-pink-800 placeholder-pink-400 focus:outline-none focus:ring-4 focus:ring-pink-400/50 focus:border-pink-500 transition-all duration-300 shadow-lg shadow-pink-200/50 h-[55px]" />
 
         <div class="flex items-center gap-2">
@@ -89,7 +104,7 @@ const addTodoHandler = async () => {
             type="button"
             @click="randomizeDeadline"
             class="p-2 backdrop-blur-md bg-gradient-to-r from-pink-200 to-fuchsia-200 border-2 border-pink-300 rounded-2xl hover:from-pink-300 hover:to-fuchsia-300 transition-all duration-300 group shadow-lg shadow-pink-200/50 h-[55px] w-[55px]">
-            <span 
+            <span
               class="material-icons text-pink-600 group-hover:rotate-180 group-hover:text-fuchsia-600 transition-all duration-300"
               >casino</span
             >
@@ -115,12 +130,14 @@ const addTodoHandler = async () => {
             :disabled="isAddButtonDisabled"
             class="backdrop-blur-md p-2 rounded-2xl focus:outline-none focus:ring-4 focus:ring-pink-400/50 transition-all duration-300 font-bold text-lg border-2 shadow-xl w-full max-w-[100px] h-[45px] ml-auto flex items-center justify-center"
             :class="{
-              'bg-gradient-to-r from-pink-400 to-fuchsia-400 hover:from-pink-500 hover:to-fuchsia-500 border-pink-400 text-white transform hover:scale-105 shadow-pink-400/40':
-                !isAddButtonDisabled,
+              'bg-gradient-to-b from-green-400 to-emerald-400 hover:from-green-500 border-green-500 text-white':
+                addIconState === 'check',
               'bg-gray-200 cursor-not-allowed border-gray-300 text-gray-400':
-                isAddButtonDisabled
+                isAddButtonDisabled && addIconState !== 'check',
+              'bg-gradient-to-r from-pink-400 to-fuchsia-400 hover:from-pink-500 hover:to-fuchsia-500 border-pink-400 text-white transform hover:scale-105 shadow-pink-400/40':
+                !isAddButtonDisabled && addIconState !== 'check'
             }">
-            <span class="material-icons">add</span>
+            <span class="material-icons">{{ addIconState }}</span>
           </button>
         </div>
       </form>

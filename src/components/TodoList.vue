@@ -66,14 +66,14 @@ const props = defineProps({
         </div>
 
         <!-- Task content -->
-        <div class="flex justify-between items-center flex-1 p-5">
+        <div class="flex justify-between items-center flex-1 py-2 pl-2 pr-1">
           <!-- Task text -->
           <span
             :class="{
               'line-through text-gray-400': todo.status === 'Done',
               'text-pink-800': todo.status === 'To Do'
             }"
-            class="transition-all duration-500 ease-in-out font-medium text-sm">
+            class="transition-all duration-500 ease-in-out font-medium text-sm whitespace-normal break-words max-w-[calc(100%-100px)]">
             {{ todo.text }}
           </span>
 
