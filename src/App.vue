@@ -80,7 +80,8 @@ const addTodoHandler = async () => {
             v-model="newDeadline"
             :config="{
               dateFormat: 'd/m/y',
-              minDate: 'today'
+              minDate: 'today',
+              disableMobile: true
             }"
             placeholder="dd/mm/yy"
             class="flex-grow p-4 backdrop-blur-md bg-pink-50/80 border-2 border-pink-300 rounded-2xl text-pink-800 focus:outline-none focus:ring-4 focus:ring-pink-400/50 focus:border-pink-500 transition-all duration-300 shadow-lg shadow-pink-200/50 h-[55px]" />
