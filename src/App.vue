@@ -3,16 +3,18 @@ import { ref, computed } from 'vue'
 import { useTodos } from '@/composables/useTodos'
 import { useUtils } from '@/composables/useUtils'
 import TodoList from '@/components/TodoList.vue'
+import DeletedTodoList from '@/components/DeletedTodoList.vue'
 import Flatpickr from 'vue-flatpickr-component'
 import 'flatpickr/dist/themes/confetti.css'
 
-const { todos, loading, addTodo, toggleStatus, setPriority } = useTodos()
+const { todos, deletedTodos, loading, addTodo, toggleStatus, setPriority, deleteTodo, restoreTodo } = useTodos()
 const { newDeadline, formatDate, isOverdue, randomizeDeadline, today } =
   useUtils()
 const newTodo = ref('')
 const newPriority = ref(0)
 const addIconState = ref('add')
 const isAddingTask = ref(false)
+const currentTab = ref('active') // 'active' or 'deleted'
 
 const isAddButtonDisabled = computed(() => {
   return (
@@ -80,7 +82,31 @@ const addTodoHandler = async () => {
         </h1>
       </div>
 
+      <div class="flex justify-center mb-4">
+        <button
+          @click="currentTab = 'active'"
+          :class="{
+            'bg-pink-500 text-white': currentTab === 'active',
+            'bg-gray-200 text-gray-700': currentTab !== 'active'
+          }"
+          class="px-4 py-2 rounded-l-lg font-bold transition-colors duration-300"
+        >
+          Active Tasks
+        </button>
+        <button
+          @click="currentTab = 'deleted'"
+          :class="{
+            'bg-pink-500 text-white': currentTab === 'deleted',
+            'bg-gray-200 text-gray-700': currentTab !== 'deleted'
+          }"
+          class="px-4 py-2 rounded-r-lg font-bold transition-colors duration-300"
+        >
+          Deleted Tasks
+        </button>
+      </div>
+
       <form
+        v-if="currentTab === 'active'"
         @submit.prevent="addTodoHandler"
         class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
         <input
@@ -142,12 +168,23 @@ const addTodoHandler = async () => {
       </form>
 
       <TodoList
+        v-if="currentTab === 'active'"
         :todos="todos"
         :loading="loading"
         :toggleStatus="toggleStatus"
         :setPriority="setPriority"
         :isOverdue="isOverdue"
-        :formatDate="formatDate" />
+        :formatDate="formatDate"
+        :deleteTodo="deleteTodo" />
+
+      <DeletedTodoList
+        v-if="currentTab === 'deleted'"
+        :todos="deletedTodos"
+        :loading="loading"
+        :isOverdue="isOverdue"
+        :formatDate="formatDate"
+        :restoreTodo="restoreTodo"
+      />
     </main>
   </div>
 </template>

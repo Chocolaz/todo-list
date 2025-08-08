@@ -8,14 +8,6 @@ const props = defineProps({
     type: Boolean,
     required: true
   },
-  toggleStatus: {
-    type: Function,
-    required: true
-  },
-  setPriority: {
-    type: Function,
-    required: true
-  },
   isOverdue: {
     type: Function,
     required: true
@@ -24,7 +16,7 @@ const props = defineProps({
     type: Function,
     required: true
   },
-  deleteTodo: {
+  restoreTodo: {
     type: Function,
     required: true
   }
@@ -57,16 +49,12 @@ const props = defineProps({
         }">
         <!-- Status bar (left side) -->
         <div
-          @click="props.toggleStatus(todo)"
-          class="flex items-center h-[80px] justify-center p-3 text-white text-xs font-bold writing-mode-vertical cursor-pointer rounded-l-2xl backdrop-blur-md shadow-lg"
+          class="flex items-center justify-center p-3 text-white text-xs font-bold writing-mode-vertical h-[80px] w-16 rounded-l-2xl backdrop-blur-md shadow-lg"
           :class="{
-            'bg-gradient-to-b from-pink-400 to-rose-400 hover:from-pink-500 hover:to-rose-500':
-              todo.status === 'To Do',
-            'bg-gradient-to-b from-green-400 to-emerald-400 hover:from-green-500 hover:to-emerald-500':
-              todo.status === 'Done'
+            'bg-gradient-to-b from-gray-400 to-gray-500 hover:from-gray-500 hover:to-gray-600': true
           }"
           style="writing-mode: vertical-rl; text-orientation: mixed">
-          {{ todo.status === 'To Do' ? '💖 To Do' : '✨ Done' }}
+          🗑️ Deleted
         </div>
 
         <!-- Task content -->
@@ -74,19 +62,14 @@ const props = defineProps({
           <!-- Task text -->
           <span
             :class="{
-              'line-through text-gray-400': todo.status === 'Done',
-              'text-pink-800': todo.status === 'To Do'
+              'line-through text-gray-400': true
             }"
             class="transition-all duration-500 ease-in-out font-medium text-sm whitespace-normal break-words max-w-[calc(100%-100px)]">
             {{ todo.text }}
           </span>
 
           <!-- Priority stars -->
-          <div
-            class="flex items-center gap-3"
-            :class="{
-              'pointer-events-none opacity-50': todo.status === 'Done'
-            }">
+          <div class="flex items-center gap-3 pointer-events-none opacity-50">
             <div class="flex items-center">
               <template
                 v-for="star in 3"
@@ -94,11 +77,10 @@ const props = defineProps({
                 <img
                   src="/pic/tobikod.png"
                   alt="Priority"
-                  @click="props.setPriority(todo, star)"
-                  class="w-8 h-8 cursor-pointer transition-all duration-300 hover:scale-125"
+                  class="w-8 h-8"
                   :class="{
                     'opacity-100 drop-shadow-lg ': star <= todo.priority,
-                    'opacity-40 hover:opacity-75': star > todo.priority
+                    'opacity-40': star > todo.priority
                   }" />
               </template>
             </div>
@@ -110,28 +92,25 @@ const props = defineProps({
           v-if="todo.deadline"
           class="absolute -top-3 -right-3 text-[9px] px-3 py-1.5 rounded-full z-10 flex items-center gap-1 backdrop-blur-md border-2 font-bold shadow-lg"
           :class="{
-            'bg-red-400 text-white border-red-300': props.isOverdue(todo),
-            'bg-purple-200 text-purple-800 border-purple-300':
-              !props.isOverdue(todo)
+            'bg-gray-400 text-white border-gray-300': true
           }">
           <span class="material-icons text-[14px]">schedule</span>
           <span>{{ props.formatDate(todo.deadline) }}</span>
         </div>
 
-        <!-- Delete button -->
+        <!-- Restore button -->
         <div
-          v-if="todo.status === 'Done'"
-          @click="props.deleteTodo(todo)"
-          class="absolute -bottom-3 -right-3 text-[9px] px-2 py-1 rounded-full z-10 flex items-center gap-1 backdrop-blur-md border-2 font-bold shadow-lg bg-red-200 text-red-500 border-red-300 cursor-pointer hover:bg-red-500 hover:text-white hover:border-red-600 transition-all duration-300 ease-in-out">
-          <span class="material-icons text-[14px]">delete</span>
+          @click="props.restoreTodo(todo)"
+          class="absolute -bottom-3 -right-3 text-[9px] px-2 py-1 rounded-full z-10 flex items-center gap-1 backdrop-blur-md border-2 font-bold shadow-lg bg-green-200 text-green-600 border-green-300 cursor-pointer hover:bg-green-500 hover:text-white hover:border-green-600 transition-all duration-300 ease-in-out">
+          <span class="material-icons text-[14px]">restore</span>
         </div>
       </li>
     </ul>
     <div
       v-else
       class="flex flex-col items-center justify-center h-40 text-gray-400">
-      <span class="material-icons text-6xl mb-2">task_alt</span>
-      <p class="text-lg font-semibold">No active tasks!</p>
+      <span class="material-icons text-6xl mb-2">delete_sweep</span>
+      <p class="text-lg font-semibold">No deleted tasks!</p>
     </div>
   </div>
 </template>
