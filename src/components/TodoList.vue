@@ -33,7 +33,7 @@ const props = defineProps({
 
 <template>
   <div
-    class="max-h-[370px] overflow-y-auto overflow-x-hidden custom-scrollbar py-4 px-1">
+    class="h-[370px] overflow-y-auto overflow-x-hidden custom-scrollbar py-4 px-1">
     <div
       v-if="props.loading"
       class="flex justify-center items-center h-40">

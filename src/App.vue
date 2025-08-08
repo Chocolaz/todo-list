@@ -93,7 +93,6 @@ const addTodoHandler = async () => {
         </div>
 
         <form
-          v-if="currentTab === 'active'"
           @submit.prevent="addTodoHandler"
           class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
           <input
@@ -154,32 +153,36 @@ const addTodoHandler = async () => {
           </div>
         </form>
 
-        <Transition name="fade" mode="out-in">
-        <TodoList
-          v-if="currentTab === 'active'"
-          :todos="todos"
-          :loading="loading"
-          :toggleStatus="toggleStatus"
-          :setPriority="setPriority"
-          :isOverdue="isOverdue"
-          :formatDate="formatDate"
-          :deleteTodo="deleteTodo" />
+        <Transition
+          name="fade"
+          mode="out-in">
+          <TodoList
+            v-if="currentTab === 'active'"
+            :todos="todos"
+            :loading="loading"
+            :toggleStatus="toggleStatus"
+            :setPriority="setPriority"
+            :isOverdue="isOverdue"
+            :formatDate="formatDate"
+            :deleteTodo="deleteTodo" />
 
-        <DeletedTodoList
-          v-else-if="currentTab === 'deleted'"
-          :todos="deletedTodos"
-          :loading="loading"
-          :isOverdue="isOverdue"
-          :formatDate="formatDate"
-          :restoreTodo="restoreTodo" />
-      </Transition>
+          <DeletedTodoList
+            v-else-if="currentTab === 'deleted'"
+            :todos="deletedTodos"
+            :loading="loading"
+            :isOverdue="isOverdue"
+            :formatDate="formatDate"
+            :restoreTodo="restoreTodo" />
+        </Transition>
       </main>
       <!-- Toggle Button (Single Icon) -->
       <button
         class="absolute -top-2 -right-2 py-1 px-4 z-50 backdrop-blur-md rounded-full transition-all duration-300 group h-[30px] flex items-center justify-center"
         :class="{
-          'bg-gradient-to-r from-pink-100 to-fuchsia-100 border-2 border-pink-200 shadow-lg shadow-pink-200/50 hover:from-pink-300 hover:to-fuchsia-300': currentTab === 'active',
-          'bg-gradient-to-r from-emerald-100 to-teal-100 border-2 border-emerald-200 shadow-lg shadow-emerald-200/50 hover:from-emerald-300 hover:to-teal-300': currentTab !== 'active'
+          'bg-gradient-to-r from-pink-100 to-fuchsia-100 border-2 border-pink-200 shadow-lg shadow-pink-200/50 hover:from-pink-300 hover:to-fuchsia-300':
+            currentTab === 'active',
+          'bg-gradient-to-r from-emerald-100 to-teal-100 border-2 border-emerald-200 shadow-lg shadow-emerald-200/50 hover:from-emerald-300 hover:to-teal-300':
+            currentTab !== 'active'
         }"
         @click="currentTab = currentTab === 'active' ? 'deleted' : 'active'">
         <span
