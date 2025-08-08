@@ -55,7 +55,7 @@ const addTodoHandler = async () => {
 
 <template>
   <div
-    class="h-screen overflow-hidden bg-gradient-to-br from-pink-200 via-rose-300 to-fuchsia-200 flex items-start justify-center p-4">
+    class="h-screen overflow-hidden animated-gradient flex items-start justify-center p-4">
     <!-- Background decorative elements -->
     <div class="absolute inset-0 overflow-hidden">
       <div
@@ -250,5 +250,23 @@ main {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+
+.animated-gradient {
+  background: linear-gradient(-45deg, #fbcfe8, #fda4af, #f0abfc);
+  background-size: 400% 400%;
+  animation: gradient-animation 15s ease infinite;
+}
+
+@keyframes gradient-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 </style>
