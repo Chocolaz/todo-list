@@ -55,7 +55,7 @@ const addTodoHandler = async () => {
 
 <template>
   <div
-    class="h-screen overflow-hidden animated-gradient flex items-start justify-center p-4">
+    class="overflow-hidden animated-gradient flex items-start justify-center p-4">
     <!-- Background decorative elements -->
     <div class="absolute inset-0 overflow-hidden">
       <div
@@ -85,7 +85,7 @@ const addTodoHandler = async () => {
           <img
             src="/pic/tobiwi.png"
             alt="TobiWi"
-            class="w-14 h-14 ml-1" />
+            class="w-14 h-15 ml-1" />
           <h1
             class="text-2xl font-extrabold bg-gradient-to-r from-pink-500 to-fuchsia-500 bg-clip-text text-transparent drop-shadow-lg">
             TodoBi
@@ -166,7 +166,7 @@ const addTodoHandler = async () => {
             :formatDate="formatDate"
             :deleteTodo="deleteTodo" />
 
-                    <DeletedTodoList
+          <DeletedTodoList
             v-else-if="currentTab === 'deleted'"
             :todos="deletedTodos"
             :loading="loading"
