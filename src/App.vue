@@ -63,9 +63,8 @@ const addTodoHandler = async () => {
       <div
         class="absolute bottom-20 right-20 w-2 h-2 bg-white rounded-full animate-ping delay-1000"></div>
     </div>
-
     <main
-      class="relative max-w-lg w-full backdrop-blur-xl bg-white/80 border-4 border-pink-300/60 p-4 rounded-3xl shadow-2xl shadow-pink-400/20 max-h-[calc(100vh-32px)] overflow-y-auto z-10">
+      class="relative max-w-lg w-full backdrop-blur-xl bg-white/80 border-4 border-pink-300/60 p-4 rounded-3xl shadow-2xl shadow-pink-400/20 max-h-screen overflow-hidden z-10">
       <div class="flex items-center justify-center pb-2 gap-2">
         <h1
           class="text-2xl font-extrabold bg-gradient-to-r from-pink-500 to-fuchsia-500 bg-clip-text text-transparent drop-shadow-lg">
@@ -187,5 +186,11 @@ input[type='date']::-webkit-calendar-picker-indicator:hover {
 .backdrop-blur-md {
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+}
+
+main {
+  height: auto;
+  max-height: 100vh; /* ไม่เกินความสูง viewport */
+  overflow: hidden; /* ป้องกัน scroll */
 }
 </style>

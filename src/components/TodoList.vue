@@ -54,7 +54,7 @@ const props = defineProps({
         <!-- Status bar (left side) -->
         <div
           @click="props.toggleStatus(todo)"
-          class="flex items-center justify-center p-3 text-white text-xs font-bold writing-mode-vertical h-full max-h-[80px] cursor-pointer transition-all duration-300 ease-in-out rounded-l-2xl backdrop-blur-md shadow-lg"
+          class="flex items-center justify-center p-3 text-white text-xs font-bold writing-mode-vertical cursor-pointer rounded-l-2xl backdrop-blur-md shadow-lg"
           :class="{
             'bg-gradient-to-b from-pink-400 to-rose-400 hover:from-pink-500 hover:to-rose-500':
               todo.status === 'To Do',
