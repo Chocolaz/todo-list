@@ -51,7 +51,7 @@ const addTodoHandler = async () => {
     </div>
 
     <main
-      class="relative max-w-lg w-full backdrop-blur-xl bg-white/80 border-4 border-pink-300/60 p-4 rounded-3xl shadow-2xl shadow-pink-400/20">
+      class="relative max-w-lg w-full backdrop-blur-xl bg-white/80 border-4 border-pink-300/60 p-4 rounded-3xl shadow-2xl shadow-pink-400/20 max-h-[calc(100vh-32px)] overflow-y-auto z-10">
       <div class="flex items-center justify-center pb-2 gap-2">
         <h1
           class="text-2xl font-extrabold bg-gradient-to-r from-pink-500 to-fuchsia-500 bg-clip-text text-transparent drop-shadow-lg">
