@@ -4,10 +4,9 @@ import { useTodos } from '@/composables/useTodos'
 import { useUtils } from '@/composables/useUtils'
 import TodoList from '@/components/TodoList.vue'
 import Flatpickr from 'vue-flatpickr-component'
-import 'flatpickr/dist/themes/material_red.css'
-import './pink_flatpickr.css'
+import 'flatpickr/dist/themes/confetti.css'
 
-const { todos, addTodo, toggleStatus, setPriority } = useTodos()
+const { todos, loading, addTodo, toggleStatus, setPriority } = useTodos()
 const { newDeadline, formatDate, isOverdue, randomizeDeadline, today } =
   useUtils()
 const newTodo = ref('')
@@ -53,33 +52,42 @@ const addTodoHandler = async () => {
 
     <main
       class="relative max-w-lg w-full backdrop-blur-xl bg-white/80 border-4 border-pink-300/60 p-4 rounded-3xl shadow-2xl shadow-pink-400/20">
-      <h1
-        class="text-2xl font-extrabold mb-4 text-center bg-gradient-to-r from-pink-500 to-fuchsia-500 bg-clip-text text-transparent drop-shadow-lg">
-        ✨ TobiDo TodoBi ✨
-      </h1>
+      <div class="flex items-center justify-center pb-2 gap-2">
+        <h1
+          class="text-2xl font-extrabold bg-gradient-to-r from-pink-500 to-fuchsia-500 bg-clip-text text-transparent drop-shadow-lg">
+          TobiDo
+        </h1>
+        <img
+          src="/pic/tobiwi.png"
+          alt="TobiWi"
+          class="w-14 h-14 ml-1" />
+        <h1
+          class="text-2xl font-extrabold bg-gradient-to-r from-pink-500 to-fuchsia-500 bg-clip-text text-transparent drop-shadow-lg">
+          TodoBi
+        </h1>
+      </div>
 
       <form
         @submit.prevent="addTodoHandler"
         class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
         <input
           v-model="newTodo"
-          placeholder="✨ Add a task..."
-          class="md:col-span-2 p-4 backdrop-blur-md bg-pink-50/80 border-2 border-pink-300 rounded-2xl text-pink-800 placeholder-pink-400 focus:outline-none focus:ring-4 focus:ring-pink-400/50 focus:border-pink-500 transition-all duration-300 shadow-lg shadow-pink-200/50" />
+          placeholder="Add a task..."
+          class="md:col-span-2 p-4 backdrop-blur-md bg-pink-50/80 border-2 border-pink-300 rounded-2xl text-pink-800 placeholder-pink-400 focus:outline-none focus:ring-4 focus:ring-pink-400/50 focus:border-pink-500 transition-all duration-300 shadow-lg shadow-pink-200/50 h-[55px]" />
 
         <div class="flex items-center gap-2">
-                    <Flatpickr
+          <Flatpickr
             v-model="newDeadline"
             :config="{
               dateFormat: 'd/m/y',
-              minDate: today,
-              theme: 'flatpickr-pink-theme'
+              minDate: 'today'
             }"
             placeholder="dd/mm/yy"
-            class="flex-grow p-4 backdrop-blur-md bg-pink-50/80 border-2 border-pink-300 rounded-2xl text-pink-800 focus:outline-none focus:ring-4 focus:ring-pink-400/50 focus:border-pink-500 transition-all duration-300 shadow-lg shadow-pink-200/50" />
+            class="flex-grow p-4 backdrop-blur-md bg-pink-50/80 border-2 border-pink-300 rounded-2xl text-pink-800 focus:outline-none focus:ring-4 focus:ring-pink-400/50 focus:border-pink-500 transition-all duration-300 shadow-lg shadow-pink-200/50 h-[55px]" />
           <button
             type="button"
             @click="randomizeDeadline"
-            class="p-4 backdrop-blur-md bg-gradient-to-r from-pink-200 to-fuchsia-200 border-2 border-pink-300 rounded-2xl hover:from-pink-300 hover:to-fuchsia-300 transition-all duration-300 group shadow-lg shadow-pink-200/50">
+            class="p-2 backdrop-blur-md bg-gradient-to-r from-pink-200 to-fuchsia-200 border-2 border-pink-300 rounded-2xl hover:from-pink-300 hover:to-fuchsia-300 transition-all duration-300 group shadow-lg shadow-pink-200/50 h-[55px] w-[55px]">
             <span
               class="material-icons text-pink-600 group-hover:rotate-180 group-hover:text-fuchsia-600 transition-all duration-300"
               >casino</span
@@ -92,16 +100,15 @@ const addTodoHandler = async () => {
           <template
             v-for="star in 3"
             :key="star">
-            <span
+            <img
+              src="/pic/tobikod.png"
+              alt="Priority"
               @click="newPriority = star"
-              class="material-icons cursor-pointer transition-all duration-300 hover:scale-125 text-xl"
+              class="w-8 h-8 cursor-pointer transition-all duration-300 hover:scale-125"
               :class="{
-                'text-pink-500 drop-shadow-lg animate-pulse':
-                  star <= newPriority,
-                'text-pink-200 hover:text-pink-400': star > newPriority
-              }">
-              star
-            </span>
+                'opacity-100 drop-shadow-lg ': star <= newPriority,
+                'opacity-40 hover:opacity-75': star > newPriority
+              }" />
           </template>
         </div>
 
@@ -114,12 +121,13 @@ const addTodoHandler = async () => {
             'bg-gray-200 cursor-not-allowed border-gray-300 text-gray-400':
               isAddButtonDisabled
           }">
-          ✨ Add Task ✨
+          Add Task
         </button>
       </form>
 
       <TodoList
         :todos="todos"
+        :loading="loading"
         :toggleStatus="toggleStatus"
         :setPriority="setPriority"
         :isOverdue="isOverdue"

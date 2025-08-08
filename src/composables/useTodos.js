@@ -11,6 +11,7 @@ import {
 
 export function useTodos() {
   const todos = ref([])
+  const loading = ref(true)
   const todosCollection = collection(db, 'todos')
   const todosQuery = query(todosCollection)
 
@@ -31,6 +32,7 @@ export function useTodos() {
       todos.value = fbTodos.sort(
         (a, b) => b.createdAt.seconds - a.createdAt.seconds
       )
+      loading.value = false
     })
   })
 
@@ -58,6 +60,7 @@ export function useTodos() {
 
   return {
     todos,
+    loading,
     addTodo,
     toggleStatus,
     setPriority

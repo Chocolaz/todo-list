@@ -1,9 +1,11 @@
 <script setup>
-import { defineProps } from 'vue'
-
 const props = defineProps({
   todos: {
     type: Array,
+    required: true
+  },
+  loading: {
+    type: Boolean,
     required: true
   },
   toggleStatus: {
@@ -28,7 +30,17 @@ const props = defineProps({
 <template>
   <div
     class="max-h-[450px] overflow-y-auto overflow-x-hidden custom-scrollbar py-4 px-1">
-    <ul class="space-y-4 py-2 pr-2">
+    <div
+      v-if="props.loading"
+      class="flex justify-center items-center h-40">
+      <img
+        src="/pic/tobiload.png"
+        alt="Loading..."
+        class="w-16 h-16 animate-spin" />
+    </div>
+    <ul
+      v-else
+      class="space-y-4 py-2 pr-2">
       <li
         v-for="todo in props.todos"
         :key="todo.id"
@@ -66,22 +78,24 @@ const props = defineProps({
           </span>
 
           <!-- Priority stars -->
-          <div class="flex items-center gap-3">
+          <div
+            class="flex items-center gap-3"
+            :class="{
+              'pointer-events-none opacity-50': todo.status === 'Done'
+            }">
             <div class="flex items-center">
               <template
                 v-for="star in 3"
                 :key="star">
-                <span
+                <img
+                  src="/pic/tobikod.png"
+                  alt="Priority"
                   @click="props.setPriority(todo, star)"
-                  class="material-icons text-[16px] cursor-pointer transition-all duration-300 hover:scale-125"
+                  class="w-8 h-8 cursor-pointer transition-all duration-300 hover:scale-125"
                   :class="{
-                    'text-pink-500 drop-shadow-lg animate-pulse':
-                      star <= todo.priority,
-                    'text-pink-200 hover:text-pink-400':
-                      star > todo.priority
-                  }">
-                  star
-                </span>
+                    'opacity-100 drop-shadow-lg ': star <= todo.priority,
+                    'opacity-40 hover:opacity-75': star > todo.priority
+                  }" />
               </template>
             </div>
           </div>
