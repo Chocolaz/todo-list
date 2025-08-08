@@ -21,6 +21,8 @@ const props = defineProps({
     required: true
   }
 })
+
+const emit = defineEmits(['switch-to-active'])
 </script>
 
 <template>
@@ -111,6 +113,12 @@ const props = defineProps({
       class="flex flex-col items-center justify-center h-40 text-gray-400">
       <span class="material-icons text-6xl mb-2">delete_sweep</span>
       <p class="text-lg font-semibold">No deleted tasks!</p>
+      <button
+        @click="emit('switch-to-active')"
+        class="mt-4 px-4 py-2 cursor-pointer bg-pink-400 text-white rounded-full shadow-lg hover:bg-pink-600 transition-colors duration-300 ease-in-out flex items-center gap-2">
+        <span class="material-icons">task_alt</span>
+        Go to Active Tasks
+      </button>
     </div>
   </div>
 </template>

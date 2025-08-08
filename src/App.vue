@@ -166,13 +166,14 @@ const addTodoHandler = async () => {
             :formatDate="formatDate"
             :deleteTodo="deleteTodo" />
 
-          <DeletedTodoList
+                    <DeletedTodoList
             v-else-if="currentTab === 'deleted'"
             :todos="deletedTodos"
             :loading="loading"
             :isOverdue="isOverdue"
             :formatDate="formatDate"
-            :restoreTodo="restoreTodo" />
+            :restoreTodo="restoreTodo"
+            @switch-to-active="currentTab = 'active'" />
         </Transition>
       </main>
       <!-- Toggle Button (Single Icon) -->
