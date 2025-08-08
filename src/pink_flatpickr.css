@@ -1,0 +1,9 @@
+.flatpickr-pink-theme {
+    --fp-primary-color: #FF69B4; /* A shade of pink */
+    --fp-bg-color: #FFF0F5; /* Light pink background */
+    --fp-text-color: #333;
+    --fp-border-color: #FFC0CB; /* Lighter pink border */
+    --fp-selected-date-background: #FF1493; /* Deeper pink for selected dates */
+    --fp-selected-date-color: #FFFFFF;
+    --fp-today-color: #FF69B4; /* Pink for today's date */
+}

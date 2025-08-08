@@ -11,12 +11,12 @@ export function useUtils() {
     return `${year}-${month}-${day}`
   })
 
-  const formatDate = (date) => {
+    const formatDate = (date) => {
     if (!date) return ''
-    return new Intl.DateTimeFormat('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
+    return new Intl.DateTimeFormat('en-GB', {
+      year: '2-digit',
+      month: '2-digit',
+      day: '2-digit'
     }).format(date)
   }
 

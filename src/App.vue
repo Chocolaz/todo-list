@@ -3,6 +3,9 @@ import { ref, computed } from 'vue'
 import { useTodos } from '@/composables/useTodos'
 import { useUtils } from '@/composables/useUtils'
 import TodoList from '@/components/TodoList.vue'
+import Flatpickr from 'vue-flatpickr-component'
+import 'flatpickr/dist/themes/material_red.css'
+import './pink_flatpickr.css'
 
 const { todos, addTodo, toggleStatus, setPriority } = useTodos()
 const { newDeadline, formatDate, isOverdue, randomizeDeadline, today } =
@@ -64,11 +67,15 @@ const addTodoHandler = async () => {
           class="md:col-span-2 p-4 backdrop-blur-md bg-pink-50/80 border-2 border-pink-300 rounded-2xl text-pink-800 placeholder-pink-400 focus:outline-none focus:ring-4 focus:ring-pink-400/50 focus:border-pink-500 transition-all duration-300 shadow-lg shadow-pink-200/50" />
 
         <div class="flex items-center gap-2">
-          <input
+                    <Flatpickr
             v-model="newDeadline"
-            type="date"
-            :min="today"
-            class="flex-grow p-4 backdrop-blur-md bg-purple-50/80 border-2 border-purple-300 rounded-2xl text-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-400/50 focus:border-purple-500 transition-all duration-300 shadow-lg shadow-purple-200/50" />
+            :config="{
+              dateFormat: 'd/m/y',
+              minDate: today,
+              theme: 'flatpickr-pink-theme'
+            }"
+            placeholder="dd/mm/yy"
+            class="flex-grow p-4 backdrop-blur-md bg-pink-50/80 border-2 border-pink-300 rounded-2xl text-pink-800 focus:outline-none focus:ring-4 focus:ring-pink-400/50 focus:border-pink-500 transition-all duration-300 shadow-lg shadow-pink-200/50" />
           <button
             type="button"
             @click="randomizeDeadline"
@@ -122,7 +129,6 @@ const addTodoHandler = async () => {
 </template>
 
 <style scoped>
-/* Custom date input styling for kawaii theme */
 input[type='date']::-webkit-calendar-picker-indicator {
   filter: hue-rotate(300deg) brightness(1.2);
   opacity: 0.8;
