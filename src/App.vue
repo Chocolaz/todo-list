@@ -30,7 +30,7 @@ const addTodoHandler = async () => {
 
 <template>
   <div
-    class="min-h-screen bg-gradient-to-br from-pink-200 via-rose-300 to-fuchsia-200 flex items-center justify-center p-4">
+    class="h-screen overflow-hidden bg-gradient-to-br from-pink-200 via-rose-300 to-fuchsia-200 flex items-start justify-center p-4">
     <!-- Background decorative elements -->
     <div class="absolute inset-0 overflow-hidden">
       <div
@@ -88,7 +88,7 @@ const addTodoHandler = async () => {
             type="button"
             @click="randomizeDeadline"
             class="p-2 backdrop-blur-md bg-gradient-to-r from-pink-200 to-fuchsia-200 border-2 border-pink-300 rounded-2xl hover:from-pink-300 hover:to-fuchsia-300 transition-all duration-300 group shadow-lg shadow-pink-200/50 h-[55px] w-[55px]">
-            <span
+            <span 
               class="material-icons text-pink-600 group-hover:rotate-180 group-hover:text-fuchsia-600 transition-all duration-300"
               >casino</span
             >
@@ -96,7 +96,7 @@ const addTodoHandler = async () => {
         </div>
 
         <div class="flex items-center gap-2 md:col-span-3">
-          <span class="text-pink-600 mr-3 font-bold">💖 Priority:</span>
+          <span class="text-pink-600 font-bold">💖 Priority:</span>
           <template
             v-for="star in 3"
             :key="star">
@@ -110,19 +110,18 @@ const addTodoHandler = async () => {
                 'opacity-40 hover:opacity-75': star > newPriority
               }" />
           </template>
+          <button
+            :disabled="isAddButtonDisabled"
+            class="backdrop-blur-md p-2 rounded-2xl focus:outline-none focus:ring-4 focus:ring-pink-400/50 transition-all duration-300 font-bold text-lg border-2 shadow-xl w-full max-w-[100px] h-[45px] ml-auto flex items-center justify-center"
+            :class="{
+              'bg-gradient-to-r from-pink-400 to-fuchsia-400 hover:from-pink-500 hover:to-fuchsia-500 border-pink-400 text-white transform hover:scale-105 shadow-pink-400/40':
+                !isAddButtonDisabled,
+              'bg-gray-200 cursor-not-allowed border-gray-300 text-gray-400':
+                isAddButtonDisabled
+            }">
+            <span class="material-icons">add</span>
+          </button>
         </div>
-
-        <button
-          :disabled="isAddButtonDisabled"
-          class="md:col-span-3 backdrop-blur-md px-6 py-2 rounded-2xl focus:outline-none focus:ring-4 focus:ring-pink-400/50 transition-all duration-300 font-bold text-lg border-2 shadow-xl"
-          :class="{
-            'bg-gradient-to-r from-pink-400 to-fuchsia-400 hover:from-pink-500 hover:to-fuchsia-500 border-pink-400 text-white transform hover:scale-105 shadow-pink-400/40':
-              !isAddButtonDisabled,
-            'bg-gray-200 cursor-not-allowed border-gray-300 text-gray-400':
-              isAddButtonDisabled
-          }">
-          Add Task
-        </button>
       </form>
 
       <TodoList
