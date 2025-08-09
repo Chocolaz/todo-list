@@ -55,7 +55,7 @@ const addTodoHandler = async () => {
 
 <template>
   <div
-    class="overflow-hidden animated-gradient flex items-start justify-center p-4">
+    class="fixed inset-0 overflow-hidden animated-gradient flex items-start justify-center p-4">
     <!-- Background decorative elements -->
     <div class="absolute inset-0 overflow-hidden">
       <div
