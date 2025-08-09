@@ -1,40 +1,19 @@
 <script setup>
-const props = defineProps({
-  todos: {
-    type: Array,
-    required: true
-  },
-  loading: {
-    type: Boolean,
-    required: true
-  },
-  toggleStatus: {
-    type: Function,
-    required: true
-  },
-  setPriority: {
-    type: Function,
-    required: true
-  },
-  isOverdue: {
-    type: Function,
-    required: true
-  },
-  formatDate: {
-    type: Function,
-    required: true
-  },
-  deleteTodo: {
-    type: Function,
-    required: true
-  }
-})
+import { inject } from 'vue'
+
+const todos = inject('todos')
+const loading = inject('loading')
+const toggleStatus = inject('toggleStatus')
+const setPriority = inject('setPriority')
+const isOverdue = inject('isOverdue')
+const formatDate = inject('formatDate')
+const deleteTodo = inject('deleteTodo')
 </script>
 
 <template>
   <div class="h-full flex flex-col py-4 px-1">
     <div
-      v-if="props.loading"
+      v-if="loading"
       class="flex justify-center items-center h-40">
       <img
         src="/pic/tobiload.png"
@@ -42,10 +21,10 @@ const props = defineProps({
         class="w-16 h-16 animate-spin" />
     </div>
     <ul
-      v-else-if="props.todos.length > 0"
+      v-else-if="todos.length > 0"
       class="space-y-4 py-4 pl-1 pr-2.5 overflow-y-auto overflow-x-hidden custom-scrollbar">
       <li
-        v-for="todo in props.todos"
+        v-for="todo in todos"
         :key="todo.id"
         class="relative z-0 flex items-center rounded-2xl backdrop-blur-md border-2 transition-all duration-500 ease-in-out hover:scale-102 hover:shadow-xl group shadow-lg"
         :class="{
@@ -56,7 +35,7 @@ const props = defineProps({
         }">
         <!-- Status bar (left side) -->
         <div
-          @click="props.toggleStatus(todo)"
+          @click="toggleStatus(todo)"
           class="flex items-center h-[80px] justify-center p-3 text-white text-xs font-bold writing-mode-vertical cursor-pointer rounded-l-2xl backdrop-blur-md shadow-lg"
           :class="{
             'bg-gradient-to-b from-pink-400 to-rose-400 hover:from-pink-500 hover:to-rose-500':
@@ -93,7 +72,7 @@ const props = defineProps({
                 <img
                   src="/pic/tobikod.png"
                   alt="Priority"
-                  @click="props.setPriority(todo, star)"
+                  @click="setPriority(todo, star)"
                   class="w-8 h-8 cursor-pointer transition-all duration-300 hover:scale-125"
                   :class="{
                     'opacity-100 drop-shadow-lg ': star <= todo.priority,
@@ -109,18 +88,18 @@ const props = defineProps({
           v-if="todo.deadline"
           class="absolute -top-3 -right-3 text-[9px] px-3 py-1.5 rounded-full z-10 flex items-center gap-1 backdrop-blur-md border-2 font-bold shadow-lg"
           :class="{
-            'bg-red-400 text-white border-red-300': props.isOverdue(todo),
+            'bg-red-400 text-white border-red-300': isOverdue(todo),
             'bg-purple-200 text-purple-800 border-purple-300':
-              !props.isOverdue(todo)
+              !isOverdue(todo)
           }">
           <span class="material-icons text-[14px]">schedule</span>
-          <span>{{ props.formatDate(todo.deadline) }}</span>
+          <span>{{ formatDate(todo.deadline) }}</span>
         </div>
 
         <!-- Delete button -->
         <div
           v-if="todo.status === 'Done'"
-          @click="props.deleteTodo(todo)"
+          @click="deleteTodo(todo)"
           class="absolute -bottom-3 -right-3 text-[9px] px-2 py-1 rounded-full z-10 flex items-center gap-1 backdrop-blur-md border-2 font-bold bg-red-200 text-red-500 border-red-300 cursor-pointer hover:bg-red-500 hover:text-white hover:border-red-600 transition-all duration-300 ease-in-out">
           <span class="material-icons text-[14px]">delete</span>
         </div>

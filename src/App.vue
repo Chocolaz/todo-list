@@ -1,11 +1,14 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, provide } from 'vue'
 import { useTodos } from '@/composables/useTodos'
 import { useUtils } from '@/composables/useUtils'
 import TodoList from '@/components/TodoList.vue'
 import DeletedTodoList from '@/components/DeletedTodoList.vue'
 import Flatpickr from 'vue-flatpickr-component'
 import 'flatpickr/dist/themes/confetti.css'
+
+const ACTIVE_TAB = 'active'
+const DELETED_TAB = 'deleted'
 
 const {
   todos,
@@ -23,7 +26,17 @@ const newTodo = ref('')
 const newPriority = ref(0)
 const addIconState = ref('add')
 const isAddingTask = ref(false)
-const currentTab = ref('active') // 'active' or 'deleted'
+const currentTab = ref(ACTIVE_TAB) // 'active' or 'deleted'
+
+provide('todos', todos)
+provide('deletedTodos', deletedTodos)
+provide('loading', loading)
+provide('toggleStatus', toggleStatus)
+provide('setPriority', setPriority)
+provide('deleteTodo', deleteTodo)
+provide('restoreTodo', restoreTodo)
+provide('formatDate', formatDate)
+provide('isOverdue', isOverdue)
 
 const isAddButtonDisabled = computed(() => {
   return (
@@ -85,7 +98,7 @@ const addTodoHandler = async () => {
           <img
             src="/pic/tobiwi.png"
             alt="TobiWi"
-            class="w-14 h-15 ml-1" />
+            class="w-14 h-15 ml-1 animate-pulse" />
           <h1
             class="text-2xl font-extrabold bg-gradient-to-r from-pink-500 to-fuchsia-500 bg-clip-text text-transparent drop-shadow-lg">
             TodoBi
@@ -139,7 +152,7 @@ const addTodoHandler = async () => {
             </template>
             <button
               :disabled="isAddButtonDisabled"
-              class="backdrop-blur-md p-2 rounded-2xl focus:outline-none focus:ring-4 focus:ring-pink-400/50 transition-all duration-300 font-bold text-lg border-2 shadow-xl w-full max-w-[100px] h-[45px] ml-auto flex items-center justify-center"
+              class="backdrop-blur-md p-2 rounded-2xl focus:outline-none focus:ring-4 focus:ring-pink-400/50 transition-all duration-300 font-bold text-lg border-2 w-full max-w-[100px] h-[45px] ml-auto flex items-center justify-center"
               :class="{
                 'bg-gradient-to-b from-green-400 to-emerald-400 hover:from-green-500 border-green-500 text-white':
                   addIconState === 'check',
@@ -157,24 +170,11 @@ const addTodoHandler = async () => {
           name="fade"
           mode="out-in"
           class="flex-grow min-h-0">
-          <TodoList
-            v-if="currentTab === 'active'"
-            :todos="todos"
-            :loading="loading"
-            :toggleStatus="toggleStatus"
-            :setPriority="setPriority"
-            :isOverdue="isOverdue"
-            :formatDate="formatDate"
-            :deleteTodo="deleteTodo" />
+          <TodoList v-if="currentTab === ACTIVE_TAB" />
 
           <DeletedTodoList
-            v-else-if="currentTab === 'deleted'"
-            :todos="deletedTodos"
-            :loading="loading"
-            :isOverdue="isOverdue"
-            :formatDate="formatDate"
-            :restoreTodo="restoreTodo"
-            @switch-to-active="currentTab = 'active'" />
+            v-else-if="currentTab === DELETED_TAB"
+            @switch-to-active="currentTab = ACTIVE_TAB" />
         </Transition>
       </main>
       <!-- Toggle Button (Single Icon) -->
@@ -182,18 +182,20 @@ const addTodoHandler = async () => {
         class="absolute -top-2 -right-2 py-1 px-4 z-50 backdrop-blur-md rounded-full transition-all duration-300 group h-[30px] flex items-center justify-center"
         :class="{
           'bg-gradient-to-r from-pink-100 to-fuchsia-100 border-2 border-pink-200 shadow-lg shadow-pink-200/50 hover:from-pink-300 hover:to-fuchsia-300':
-            currentTab === 'active',
+            currentTab === ACTIVE_TAB,
           'bg-gradient-to-r from-emerald-100 to-teal-100 border-2 border-emerald-200 shadow-lg shadow-emerald-200/50 hover:from-emerald-300 hover:to-teal-300':
-            currentTab !== 'active'
+            currentTab !== ACTIVE_TAB
         }"
-        @click="currentTab = currentTab === 'active' ? 'deleted' : 'active'">
+        @click="
+          currentTab = currentTab === ACTIVE_TAB ? DELETED_TAB : ACTIVE_TAB
+        ">
         <span
           class="material-icons text-[20px]"
           :class="{
-            'text-pink-500': currentTab === 'active',
-            'text-emerald-500': currentTab !== 'active'
+            'text-pink-500': currentTab === ACTIVE_TAB,
+            'text-emerald-500': currentTab !== ACTIVE_TAB
           }">
-          {{ currentTab === 'active' ? 'delete_sweep' : 'task_alt' }}
+          {{ currentTab === ACTIVE_TAB ? 'delete_sweep' : 'task_alt' }}
         </span>
       </button>
     </div>
@@ -212,19 +214,6 @@ input[type='date']::-webkit-calendar-picker-indicator:hover {
   transform: scale(1.1);
 }
 
-/* Custom animations */
-@keyframes pulse {
-  0%,
-  100% {
-    transform: scale(1);
-    opacity: 0.5;
-  }
-  50% {
-    transform: scale(1.05);
-    opacity: 0.8;
-  }
-}
-
 /* Glass effect enhancement */
 .backdrop-blur-xl {
   backdrop-filter: blur(16px);
@@ -236,8 +225,6 @@ input[type='date']::-webkit-calendar-picker-indicator:hover {
   -webkit-backdrop-filter: blur(8px);
 }
 
-
-
 /* Transition styles */
 .fade-enter-active,
 .fade-leave-active {
@@ -247,23 +234,5 @@ input[type='date']::-webkit-calendar-picker-indicator:hover {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
-}
-
-.animated-gradient {
-  background: linear-gradient(-45deg, #fbcfe8, #fda4af, #f0abfc);
-  background-size: 400% 400%;
-  animation: gradient-animation 15s ease infinite;
-}
-
-@keyframes gradient-animation {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
 }
 </style>

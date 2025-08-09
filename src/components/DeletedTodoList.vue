@@ -1,26 +1,11 @@
 <script setup>
-const props = defineProps({
-  todos: {
-    type: Array,
-    required: true
-  },
-  loading: {
-    type: Boolean,
-    required: true
-  },
-  isOverdue: {
-    type: Function,
-    required: true
-  },
-  formatDate: {
-    type: Function,
-    required: true
-  },
-  restoreTodo: {
-    type: Function,
-    required: true
-  }
-})
+import { inject } from 'vue'
+
+const todos = inject('deletedTodos')
+const loading = inject('loading')
+const isOverdue = inject('isOverdue')
+const formatDate = inject('formatDate')
+const restoreTodo = inject('restoreTodo')
 
 const emit = defineEmits(['switch-to-active'])
 </script>
@@ -28,7 +13,7 @@ const emit = defineEmits(['switch-to-active'])
 <template>
   <div class="h-full flex flex-col py-4 px-1">
     <div
-      v-if="props.loading"
+      v-if="loading"
       class="flex justify-center items-center h-40">
       <img
         src="/pic/tobiload.png"
@@ -36,10 +21,10 @@ const emit = defineEmits(['switch-to-active'])
         class="w-16 h-16 animate-spin" />
     </div>
     <ul
-      v-else-if="props.todos.length > 0"
+      v-else-if="todos.length > 0"
       class="space-y-4 py-4 pl-1 pr-2.5 overflow-y-auto overflow-x-hidden custom-scrollbar">
       <li
-        v-for="todo in props.todos"
+        v-for="todo in todos"
         :key="todo.id"
         class="relative z-0 flex items-center rounded-2xl backdrop-blur-md border-2 transition-all duration-500 ease-in-out hover:scale-102 hover:shadow-xl group shadow-lg"
         :class="{
@@ -96,12 +81,12 @@ const emit = defineEmits(['switch-to-active'])
             'bg-gray-400 text-white border-gray-300': true
           }">
           <span class="material-icons text-[14px]">schedule</span>
-          <span>{{ props.formatDate(todo.deadline) }}</span>
+          <span>{{ formatDate(todo.deadline) }}</span>
         </div>
 
         <!-- Restore button -->
         <div
-          @click="props.restoreTodo(todo)"
+          @click="restoreTodo(todo)"
           class="absolute -bottom-3 -right-3 text-[9px] px-2 py-1 rounded-full z-10 flex items-center gap-1 backdrop-blur-md border-2 font-bold bg-green-200 text-green-600 border-green-300 cursor-pointer hover:bg-green-500 hover:text-white hover:border-green-600 transition-all duration-300 ease-in-out">
           <span class="material-icons text-[14px]">restore</span>
         </div>

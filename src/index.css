@@ -8,3 +8,34 @@ body {
   touch-action: pan-x pan-y;
   height: 100%;
 }
+
+/* Custom animations */
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+}
+
+.animated-gradient {
+  background: linear-gradient(-45deg, #fbcfe8, #fda4af, #f0abfc);
+  background-size: 400% 400%;
+  animation: gradient-animation 15s ease infinite;
+}
+
+@keyframes gradient-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
