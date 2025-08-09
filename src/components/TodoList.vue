@@ -32,8 +32,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <div
-    class="h-[370px] overflow-y-auto overflow-x-hidden custom-scrollbar py-4 px-1">
+  <div class="h-full flex flex-col py-4 px-1">
     <div
       v-if="props.loading"
       class="flex justify-center items-center h-40">
@@ -44,7 +43,7 @@ const props = defineProps({
     </div>
     <ul
       v-else-if="props.todos.length > 0"
-      class="space-y-4 py-2 pr-2">
+      class="space-y-4 py-4 pl-1 pr-2.5 overflow-y-auto overflow-x-hidden custom-scrollbar">
       <li
         v-for="todo in props.todos"
         :key="todo.id"
@@ -122,7 +121,7 @@ const props = defineProps({
         <div
           v-if="todo.status === 'Done'"
           @click="props.deleteTodo(todo)"
-          class="absolute -bottom-3 -right-3 text-[9px] px-2 py-1 rounded-full z-10 flex items-center gap-1 backdrop-blur-md border-2 font-bold shadow-lg bg-red-200 text-red-500 border-red-300 cursor-pointer hover:bg-red-500 hover:text-white hover:border-red-600 transition-all duration-300 ease-in-out">
+          class="absolute -bottom-3 -right-3 text-[9px] px-2 py-1 rounded-full z-10 flex items-center gap-1 backdrop-blur-md border-2 font-bold bg-red-200 text-red-500 border-red-300 cursor-pointer hover:bg-red-500 hover:text-white hover:border-red-600 transition-all duration-300 ease-in-out">
           <span class="material-icons text-[14px]">delete</span>
         </div>
       </li>

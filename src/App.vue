@@ -74,9 +74,9 @@ const addTodoHandler = async () => {
       <div
         class="absolute bottom-20 right-20 w-2 h-2 bg-white rounded-full animate-ping delay-1000"></div>
     </div>
-    <div class="relative max-w-lg w-full">
+    <div class="relative max-w-lg w-full h-full">
       <main
-        class="backdrop-blur-xl bg-white/80 border-4 border-pink-300/60 p-4 rounded-3xl shadow-2xl shadow-pink-400/20 max-h-screen overflow-hidden z-0">
+        class="backdrop-blur-xl bg-white/80 border-4 border-pink-300/60 p-4 rounded-3xl shadow-2xl shadow-pink-400/20 z-0 h-full flex flex-col">
         <div class="flex items-center justify-center pb-2 gap-2">
           <h1
             class="text-2xl font-extrabold bg-gradient-to-r from-pink-500 to-fuchsia-500 bg-clip-text text-transparent drop-shadow-lg">
@@ -155,7 +155,8 @@ const addTodoHandler = async () => {
 
         <Transition
           name="fade"
-          mode="out-in">
+          mode="out-in"
+          class="flex-grow min-h-0">
           <TodoList
             v-if="currentTab === 'active'"
             :todos="todos"
@@ -235,11 +236,7 @@ input[type='date']::-webkit-calendar-picker-indicator:hover {
   -webkit-backdrop-filter: blur(8px);
 }
 
-main {
-  height: auto;
-  max-height: 100vh; /* ไม่เกินความสูง viewport */
-  overflow: hidden; /* ป้องกัน scroll */
-}
+
 
 /* Transition styles */
 .fade-enter-active,
