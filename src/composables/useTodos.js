@@ -33,9 +33,14 @@ export function useTodos() {
           deleted: data.deleted || false
         })
       })
-      todos.value = fbTodos.sort(
-        (a, b) => b.createdAt.seconds - a.createdAt.seconds
-      )
+      todos.value = fbTodos.sort((a, b) => {
+        // Sort by status: 'To Do' comes before 'Done'
+        if (a.status === 'Done' && b.status === 'To Do') return 1
+        if (a.status === 'To Do' && b.status === 'Done') return -1
+
+        // For tasks with the same status, sort by createdAt (newest first)
+        return b.createdAt.seconds - a.createdAt.seconds
+      })
       loading.value = false
     })
 

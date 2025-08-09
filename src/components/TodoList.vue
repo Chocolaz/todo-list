@@ -20,12 +20,15 @@ const deleteTodo = inject('deleteTodo')
         alt="Loading..."
         class="w-16 h-16 animate-spin" />
     </div>
-    <ul
+    <TransitionGroup
       v-else-if="todos.length > 0"
+      name="todo-list"
+      tag="ul"
       class="space-y-4 py-4 pl-1 pr-2.5 overflow-y-auto overflow-x-hidden custom-scrollbar">
       <li
-        v-for="todo in todos"
+        v-for="(todo, index) in todos"
         :key="todo.id"
+        :style="{ '--data-index': index }"
         class="relative z-0 flex items-center rounded-2xl backdrop-blur-md border-2 transition-all duration-500 ease-in-out hover:scale-102 hover:shadow-xl group shadow-lg"
         :class="{
           'bg-pink-50/90 border-pink-200 hover:bg-pink-100/90 shadow-pink-200/50':
@@ -104,7 +107,7 @@ const deleteTodo = inject('deleteTodo')
           <span class="material-icons text-[14px]">delete</span>
         </div>
       </li>
-    </ul>
+    </TransitionGroup>
     <div
       v-else
       class="flex flex-col items-center justify-center h-40 text-gray-400">
@@ -137,5 +140,26 @@ const deleteTodo = inject('deleteTodo')
 
 .hover\:scale-102:hover {
   transform: scale(1.02);
+}
+
+/* TransitionGroup styles */
+.todo-list-move {
+  transition: transform 0.5s ease;
+}
+
+.todo-list-enter-active {
+  transition: all 0.5s ease;
+  transition-delay: calc(0.05s * var(--data-index));
+}
+
+.todo-list-leave-active {
+  transition: all 0.5s ease;
+  position: absolute;
+}
+
+.todo-list-enter-from,
+.todo-list-leave-to {
+  opacity: 0;
+  transform: translateY(30px);
 }
 </style>
