@@ -81,6 +81,13 @@ export function useTodos() {
   const toggleStatus = async (todo) => {
     const newStatus = todo.status === 'To Do' ? 'Done' : 'To Do'
     const todoRef = doc(db, 'todos', todo.id)
+
+    // Immediately update the local status for instant visual feedback
+    todo.status = newStatus
+
+    // Delay the Firebase update
+    await new Promise((resolve) => setTimeout(resolve, 700))
+
     await updateDoc(todoRef, { status: newStatus })
   }
 
